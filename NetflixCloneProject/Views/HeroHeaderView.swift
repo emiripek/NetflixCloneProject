@@ -6,9 +6,9 @@
 //
 
 import UIKit
+import SDWebImage
 
 class HeroHeaderView: UIView {
-    
     private let downloadButton: UIButton = {
         let button = UIButton()
         button.setTitle("Download", for: .normal)
@@ -20,7 +20,7 @@ class HeroHeaderView: UIView {
     }()
     
     private let playButton: UIButton = {
-        
+       
         let button = UIButton()
         button.setTitle("Play", for: .normal)
         button.layer.borderColor = UIColor.white.cgColor
@@ -37,7 +37,7 @@ class HeroHeaderView: UIView {
         imageView.image = UIImage(named: "heroImage")
         return imageView
     }()
-    
+
     
     private func addGradient() {
         let gradientLayer = CAGradientLayer()
@@ -48,7 +48,7 @@ class HeroHeaderView: UIView {
         gradientLayer.frame = bounds
         layer.addSublayer(gradientLayer)
     }
-    
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         addSubview(heroImageView)
@@ -76,12 +76,22 @@ class HeroHeaderView: UIView {
         NSLayoutConstraint.activate(downloadButtonConstraints)
     }
     
+    
+    
+    public func configure(with model: TitleViewModel) {
+        guard let url = URL(string: "https://image.tmdb.org/t/p/w500/\(model.posterURL)") else {
+            return
+        }
+        
+        heroImageView.sd_setImage(with: url, completed: nil)
+    }
+    
     override func layoutSubviews() {
         super.layoutSubviews()
         heroImageView.frame = bounds
     }
     
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        fatalError()
     }
 }
